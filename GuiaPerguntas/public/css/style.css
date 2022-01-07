@@ -1,3 +1,7 @@
-h1{
-    color: orange;
+body{
+    background-color: #a8b9c4;
+}
+
+#formulario-pergunta{
+    margin-top: 5vh;
 }
