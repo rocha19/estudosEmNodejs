@@ -23,3 +23,5 @@ INSERT INTO usuarios(nome, email, idade) VALUES(
     "joao@joao.com",
     28
 );
+
+UPDATE usuarios SET nome = "ROCHA" where id = 3;
