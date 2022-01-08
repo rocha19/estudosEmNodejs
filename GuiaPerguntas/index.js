@@ -9,18 +9,18 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 // Rotas
-app.get("/",(req, res) => {
-    res.render("index");
+app.get("/",(require, response) => {
+    response.render("index");
 });
 
-app.get("/perguntar",(req, res) => {
-    res.render("perguntar");
+app.get("/perguntar",(require, response) => {
+    response.render("perguntar");
 })
 
-app.post("/salvarpergunta",(req, res) => {
-    var titulo = req.body.titulo;
-    var descricao = req.body.descricao;
-    res.send("Formulário recebido! titulo " + titulo + " " + " descricao " + descricao);
+app.post("/salvarpergunta",(require, response) => {
+    var titulo = require.body.titulo;
+    var descricao = require.body.descricao;
+    response.send(`Formulário recebido! titulo: ${titulo}; descricao: ${descricao}.`);
 });
 
 
