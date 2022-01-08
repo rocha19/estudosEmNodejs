@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const connection = require("./database/database")
-
+const connection = require("./database/database.js");
+const Pergunta = require("./database/Pergunta.js");
 
 connection
     .authenticate()
@@ -13,7 +13,7 @@ connection
         console.log(msgErro);
     })
 
-// Estou dizendo para o Express usar o EJS como View engine
+// Express usar o EJS como View engine
 app.set('view engine','ejs');
 app.use(express.static('public'));
 // Body parser
@@ -21,7 +21,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 // Rotas
 app.get("/",(require, response) => {
-    response.render("index");
+    Pergunta.findAll({raw: true, order:[
+        ['id','DESC'] //ordendando de crescente para decrescente
+    ]}).then(perguntas => {
+        response.render("index",{
+            perguntas: perguntas
+        });
+    });
 });
 
 app.get("/perguntar",(require, response) => {
@@ -29,10 +35,19 @@ app.get("/perguntar",(require, response) => {
 })
 
 app.post("/salvarpergunta",(require, response) => {
+
     var titulo = require.body.titulo;
     var descricao = require.body.descricao;
-    response.send(`Formulário recebido! titulo: ${titulo}; descricao: ${descricao}.`);
+
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao
+    }).then(() => {
+        response.redirect("/");
+    });
 });
+
+
 
 
 app.listen(8080,()=>{console.log("App rodando!");});
