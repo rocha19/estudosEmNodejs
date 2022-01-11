@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
-const bodyParser = requise("body-parser");
-const connection = require("./database/connection");
+const bodyParser = require("body-parser");
+const connection = require("./database/database");
 
 const categoriesController = require("./categories/CategoriesController");
-const articlesController = require("./articles/ArticlesController")
+const articlesController = require("./articles/ArticlesController");
+
+const Article = require("./articles/Article");
+const Category = require("./categories/Category");
+
 // view engien
 app.set('view engine', 'ejs');
 
@@ -12,7 +16,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 // body-parser
-app.use(bodyParser.urlenconded ({extended: false}));
+app.use(bodyParser.urlencoded ({extended: false}));
 app.use(bodyParser.json());
 
 // database
