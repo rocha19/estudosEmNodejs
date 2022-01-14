@@ -57,7 +57,7 @@ app.get("/", (request, response) => {
     });
 })
 
-app.get("/:slug",(request, response) => {
+app.get("/:slug", (request, response) => {
     var slug = request.params.slug;
     Article.findOne({
         where: {
@@ -76,7 +76,7 @@ app.get("/:slug",(request, response) => {
     });
 })
 
-app.get("/category/:slug",(request, response) => {
+app.get("/category/:slug", (request, response) => {
     var slug = request.params.slug;
     Category.findOne({
         where: {
@@ -86,12 +86,12 @@ app.get("/category/:slug",(request, response) => {
     }).then( category => {
         if(category != undefined){
             Category.findAll().then(categories => {
-                res.render("index",{articles: category.articles,categories: categories});
+                response.render("index",{articles: category.articles,categories: categories});
             });
         }else{
             response.redirect("/");
         }
-    }).catch( err => {
+    }).catch( error => {
         response.redirect("/");
     })
 })
