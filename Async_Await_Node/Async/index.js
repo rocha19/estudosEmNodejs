@@ -8,6 +8,8 @@ function enviarEmail(corpo, para){
             De: Rocha
         `)
     }, 8000)
-}
+};
 
-enviarEmail("Olá, olá", "rocha@rocha.com")
+console.log("Teste de envio de email, ANTES");
+enviarEmail("Olá, olá", "rocha@rocha.com");
+console.log("Teste de envio de email, DEPOIS")
