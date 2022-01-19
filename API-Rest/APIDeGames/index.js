@@ -18,15 +18,14 @@ function auth(request, response, next){
         const bearer = authToken.split(' ');
         var token = bearer[1];
 
-        jwt.verify(token,JWTSecret,(err, data) => {
+        jwt.verify(token, JWTSecret, (err, data) => {
             if(err){
                 response.status(401);
                 response.json({err:"Token inválido!"});
             }else{
 
                 request.token = token;
-                request.loggedUser = {id: data.id,email: data.email};
-                request.empresa = "Guia do programador";                
+                request.loggedUser = {id: data.id, email: data.email};              
                 next();
             }
         });
@@ -74,8 +73,27 @@ var DB = {
 }
 
 app.get("/games",auth,(request, response) => {
+
+    var HATEOAS = [
+        {
+            href: "http://localhost:3000/games",
+            method: "GET",
+            rel: "get_game"
+        },        
+        {
+            href: "http://localhost:3000/game",
+            method: "POST",
+            rel: "login"
+
+        },
+        {
+            href: "http://localhost:3000/game",
+            method: "DELETE",
+            rel: "delete_game"
+        },
+    ]
     response.statusCode = 200;
-    response.json(DB.games);
+    response.json({game: DB.games, _links: HATEOAS});
 });
 
 app.get("/game/:id",auth,(request, response) => {
@@ -85,11 +103,35 @@ app.get("/game/:id",auth,(request, response) => {
         
         var id = parseInt(request.params.id);
 
+        var HATEOAS = [
+            {
+                href: "http://localhost:3000/games",
+                method: "GET",
+                rel: "get_game"
+            },        
+            {
+                href: "http://localhost:3000/game"+id,
+                method: "POST",
+                rel: "login"
+    
+            },
+            {
+                href: "http://localhost:3000/game/"+id,
+                method: "DELETE",
+                rel: "delete_game"
+            },            
+            {
+                href: "http://localhost:3000/game/"+id,
+                method: "PUT",
+                rel: "edit_game"
+            }
+        ]
+
         var game = DB.games.find(g => g.id == id);
 
         if(game != undefined){
             response.statusCode = 200;
-            response.json(game);
+            response.json({game, _links: HATEOAS});
         }else{
             response.sendStatus(404);
         }
