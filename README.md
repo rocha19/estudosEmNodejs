@@ -1,2 +1,2 @@
 # estudosEmNodejs
-Estudando Nodejs com integração ao mysql e mongoDB
+Estudando Nodejs pelo curso "Formação Node.js" do guia do programador na Udemy.com.
